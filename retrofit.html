@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+	<html class="sl-root base export loaded">
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<title>Retrofit: Slides</title>
+		<meta name="description" content="Slides">
+
+		<link rel="stylesheet" type="text/css" href="lib/offline-v1.css">
+	</head>
+	<body class="reveal-viewport theme-font-opensans theme-color-asphalt-orange">
+		<div class="reveal">
+			<div class="slides">
+				<section data-id="cde92401d2f67a7fd94fccf17c0f8659" class=""><h1><span><br></span></h1>
+<h1><span><br></span></h1>
+<h1>
+<span>Retrofit</span>
+</h1></section><section data-id="199ed9041c40ab962226b1be1b9dc6a6" class=""><h2 style="font-style: normal; font-variant: normal; text-align: left;">About me</h2>
+<div><br></div>
+<div>
+<br><br>
+</div>
+<div><ul>
+<p></p>
+<li><font style="font-size: 54px;">Deuphil Kaufmann<br></font></li>
+<li><font style="font-size: 54px;">Android Engineer @ IntroMe<br></font></li>
+<li><font style="font-size: 54px;">Ilonggo<br></font></li>
+<li><font style="font-size: 54px;">Java/Android/Mobile<br></font></li>
+<li>
+<font style="font-size: 54px;">twitter.com/deubaka</font><br>
+</li>
+</ul></div>
+<div><span style="font-size: 42px; text-align: left;"><br></span></div>
+<div><span style="font-size: 42px; text-align: left;"><br></span></div></section><section data-id="afeadb15eb627a5bf834e09455fcfab8" class=""><h2 style="text-align: left;">What about Retrofit?</h2>
+<div><br></div>
+<div>
+<font style="font-size: 54px;"><br></font><font><br><ul>
+<li class="fragment" data-fragment-index="0"><font style="font-size: 54px;"><span>Made by Square (Woot!)</span><br></font></li>
+<li class="fragment" data-fragment-index="1"><font style="font-size: 54px;"><span>A </span><font color="#f1c232" style="font-family: inherit; font-style: inherit; font-variant: inherit; font-weight: inherit;">ReST client</font><font color="#ffffff" style="font-family: inherit; font-style: inherit; font-variant: inherit; font-weight: inherit;">, not an HTTP client</font><br></font></li>
+<li class="fragment" data-fragment-index="2"><font style="font-size: 54px;"><span>Built for Android and Java</span><br></font></li>
+<li class="fragment" data-fragment-index="3">
+<span><font style="font-size: 54px;">Type-safe and response agnostic</font></span><br>
+</li>
+</ul>
+<ul></ul></font>
+</div></section><section data-id="44cf0e5443ce6e7e2b6cab8b3629a833" class=""><h2 style="text-align: left; ">Setting up Retrofit</h2>
+<div><br></div>
+<div>
+<br><h3 style="text-align: left;"><font style="font-size: 42px;">Gradle</font></h3>
+<div style="text-align: left;"><pre><code><font style="font-size: 24px;"> compile 'com.squareup.retrofit:retrofit:1.9.0'</font></code></pre></div>
+<div><br></div>
+<br><h3 style="text-align: left;"><font style="font-size: 42px;">OkHttp (Optional)</font></h3>
+<div><font style="font-size: 42px;"><pre><code> compile 'com.squareup.okhttp:okhttp-urlconnection:2.0.0' 
+ compile 'com.squareup.okhttp:okhttp:2.0.0'
+</code></pre></font></div>
+<br><font style="font-size: 54px;"><b><font color="#ffd966"></font></b></font>
+</div></section><section data-id="150a49a936bac0d76d88945f20c1c7ca" class=""><h2 style="font-style: normal; font-variant: normal; text-align: left;">Requesting | GET Query</h2>
+<div><br></div>
+<p>HttpUrlConnection-way</p>
+<pre style="color: rgb(169, 183, 198); font-family: Menlo; background-color: rgb(43, 43, 43);">HttpURLConnection getTodoConnection = <span style="color:#cc7832;">null;<br></span><span style="color:#cc7832;">try </span>{<br>    getTodoConnection = (HttpURLConnection) <span style="color:#9876aa;">mGetQueryUrl</span>.openConnection()<span style="color:#cc7832;">;</span><span style="color:#cc7832;"><br></span>} <span style="color:#cc7832;">catch </span>(IOException e) {<br>    Log.<span style="font-style:italic;">e</span>(<span style="color:#9876aa;font-style:italic;">TAG</span><span style="color:#cc7832;">, </span><span style="color:#6a8759;">"Error: " </span>+ e.getMessage())<span style="color:#cc7832;">;</span><span style="color:#cc7832;"><br></span>}<br><br><span style="color:#cc7832;">try </span>{<br>    String response = parseResponse(getTodoConnection.getInputStream())<span style="color:#cc7832;">;</span><span style="color:#cc7832;"><br></span>} <span style="color:#cc7832;">catch </span>(IOException e) {<br>    Log.<span style="font-style:italic;">e</span>(<span style="color:#9876aa;font-style:italic;">TAG</span><span style="color:#cc7832;">, </span><span style="color:#6a8759;">"Error: " </span>+ e.getMessage())<span style="color:#cc7832;">;</span><span style="color:#cc7832;"><br></span>} <span style="color:#cc7832;">finally </span>{<br>    getTodoConnection.disconnect()<span style="color:#cc7832;">;<br></span>}<br><br><span style="color:#808080;">// Send response somewhere (eg. Event bus or LocalBroadcastReceiver)</span></pre>
+<br><div class="fragment" data-fragment-index="0">...then off load it to a AsyncTask or IntentService and a few boilerplate codes...</div></section><section data-id="8dce982edbff4c35014509eb9e48d3f5" class=""><h2 style="font-style: normal; font-variant: normal; text-align: left;">Requesting | GET Query</h2>
+<div><br></div>
+<p><span style="font-size: 29.9999980926514px; font-style: normal; font-variant: normal;">Retrofit-way</span></p>
+<pre style="color: rgb(169, 183, 198); font-family: Menlo; background-color: rgb(43, 43, 43);"><span style="color:#cc7832;">public interface </span>TodoApi {
+
+<span style="color:#cc7832;">    </span><span style="color:#bbb529;">@GET</span>(<span style="color:#6a8759;">"/todos"</span>)<br>    <span style="color:#cc7832;">void </span><span style="color:#ffc66d;">getTodosByUserId</span>(<span style="color:#bbb529;">@Query</span>(<span style="color:#6a8759;">"userId"</span>) Long userId<span style="color:#cc7832;">, </span>Callback&lt;Todo[]&gt; todos)<span style="color:#cc7832;">;</span><span style="color:#cc7832;"><br></span><span style="color:#cc7832;"><br></span>}
+</pre>
+<p class="fragment" data-fragment-index="0"><span>... then create a RestAdapter once and create,</span><br></p>
+<pre style="font-family: Menlo; background-color: rgb(43, 43, 43);" class="fragment" data-fragment-index="1"><span style="color: rgb(169, 183, 198);"><span style="background-color:#344134;">RestAdapter</span> restAdapter = <span style="color:#cc7832;">new </span><span style="background-color:#344134;">RestAdapter</span>.Builder().setEndpoint(Api.<span style="color:#9876aa;font-style:italic;">BASE_URL</span>).build()<span style="color:#cc7832;">;<br></span><span style="color:#9876aa;">mTodoApi </span>= restAdapter.create(TodoApi.<span style="color:#cc7832;">class</span>)<span style="color:#cc7832;">;<br></span><span style="color:#cc7832;"><br></span><span style="color:#9876aa;">mTodoApi</span>.getTodosByUserId(<span style="color:#6897bb;">1L</span><span style="color:#cc7832;">, new </span>Callback&lt;Todo[]&gt;() {<br>    <span style="color:#bbb529;">@Override<br></span><span style="color:#bbb529;">    </span><span style="color:#cc7832;">public void </span><span style="color:#ffc66d;">success</span>(Todo[] todos<span style="color:#cc7832;">, </span>Response response) {<br>        </span><font color="#9876aa">// Do something on success</font><span style="color: rgb(204, 120, 50);"><br></span><span style="color: rgb(204, 120, 50);">    </span><font color="#a9b7c6">}<br><br>    </font><span style="color: rgb(187, 181, 41);">@Override<br></span><span style="color: rgb(187, 181, 41);">    </span><span style="color: rgb(204, 120, 50);">public void </span><span style="color: rgb(255, 198, 109);">failure</span><font color="#a9b7c6">(RetrofitError error) {<br>        </font><font color="#9876aa">// Do something on failure</font><span style="color: rgb(204, 120, 50);"><br></span><span style="color: rgb(204, 120, 50);">    </span><font color="#a9b7c6">}<br>})</font><span style="color: rgb(204, 120, 50);">;</span></pre>
+<p><font style="font-size: 54px;"><b><font color="#ffd966"></font></b></font></p></section><section class="" data-id="44b694ac7d868497ff958f59c0315a65"><h2 style="font-style: normal; font-variant: normal; text-align: left;">Requesting | POST</h2>
+<div>
+<span style="font-size: 29.9999980926514px; font-style: normal; font-variant: normal;">Retrofit-way</span><br>
+</div>
+<div><pre style="color: rgb(169, 183, 198); font-family: Menlo; background-color: rgb(43, 43, 43);"><span style="color:#cc7832;">public interface </span>TodoApi {<br>    <span style="color:#bbb529;">@FormUrlEncoded<br></span><span style="color:#bbb529;">    @POST</span>(<span style="color:#6a8759;">"/todos"</span>)<br>    <span style="color:#cc7832;">void </span><span style="color:#ffc66d;">addTodo</span>(<span style="color:#bbb529;">@Field</span>(<span style="color:#6a8759;">"userId"</span>) Long userId<span style="color:#cc7832;">, </span><span style="color:#bbb529;">@Field</span>(<span style="color:#6a8759;">"id"</span>) Long id<span style="color:#cc7832;">, <br></span><span style="color:#cc7832;">                 </span><span style="color:#bbb529;">@Field</span>(<span style="color:#6a8759;">"title"</span>) String title<span style="color:#cc7832;">, </span><span style="color:#bbb529;">@Field</span>(<span style="color:#6a8759;">"completed"</span>) <span style="color:#cc7832;">boolean </span>completed<span style="color:#cc7832;">, <br></span><span style="color:#cc7832;">                 </span><span style="background-color:#344134;">Callback</span>&lt;Todo&gt; todo)<span style="color:#cc7832;">;<br></span><span style="color:#cc7832;"><br></span><span style="color:#cc7832;">    </span><span style="color:#bbb529;">@POST</span>(<span style="color:#6a8759;">"/todos"</span>)<br>    <span style="color:#cc7832;">void </span><span style="color:#ffc66d;">addTodo</span>(<span style="color:#bbb529;">@Body </span>Todo newTodo<span style="color:#cc7832;">, </span><span style="background-color:#344134;">Callback</span>&lt;Todo&gt; todo)<span style="color:#cc7832;">;</span><span style="color:#cc7832;"><br></span>}</pre></div>
+<div class="fragment" data-fragment-index="0">
+<span>...then...</span><br>
+</div>
+<div class="fragment" data-fragment-index="1"><pre style="font-family: Menlo; background-color: rgb(43, 43, 43);"><span style="color: rgb(169, 183, 198);"><span style="color:#9876aa;">mTodoApi</span>.addTodo(newTodo<span style="color:#cc7832;">, new </span>Callback&lt;Todo&gt;() {<br>    <span style="color:#bbb529;">@Override<br></span><span style="color:#bbb529;">    </span><span style="color:#cc7832;">public void </span><span style="color:#ffc66d;">success</span>(Todo todo<span style="color:#cc7832;">, </span>Response response) {<br>        </span><font color="#9876aa">// Do something on success</font><span style="color: rgb(204, 120, 50);"><br></span><span style="color: rgb(204, 120, 50);">    </span><font color="#a9b7c6">}<br><br>    </font><span style="color: rgb(187, 181, 41);">@Override<br></span><span style="color: rgb(187, 181, 41);">    </span><span style="color: rgb(204, 120, 50);">public void </span><span style="color: rgb(255, 198, 109);">failure</span><font color="#a9b7c6">(RetrofitError error) {<br>        </font><font color="#9876aa">// Do something on failure</font><span style="color: rgb(204, 120, 50);"><br></span><span style="color: rgb(204, 120, 50);">    </span><font color="#a9b7c6">}<br>})</font><span style="color: rgb(204, 120, 50);">;</span></pre></div>
+<br></section><section class="" data-id="d9a9c4c6b5ffdc857684db5725c383ab"><h2 style="font-style: normal; font-variant: normal; text-align: left;">Requesting</h2>
+<div><br></div>
+<div><br></div>
+<div style="text-align: left; ">
+<ul>
+<li><font style="font-size: 42px;"><span>@PUT</span><br></font></li>
+<li><font style="font-size: 42px;"><span>@DELETE</span><br></font></li>
+<li><font style="font-size: 42px;"><span>@PATCH</span><br></font></li>
+<li><font style="font-size: 42px;"><span>@FieldMap</span><br></font></li>
+<li><font style="font-size: 42px;"><span>@QueryMap</span><br></font></li>
+<li><font style="font-size: 42px;"><span>@Multipart</span><br></font></li>
+<li><font style="font-size: 42px;"><span>@Part (for mutlipart requests via Typed* classes)</span><br></font></li>
+<li><font style="font-size: 42px;"><span>@Header</span><br></font></li>
+<li><font style="font-size: 42px;"><span>RxJava Supports</span></font></li>
+<li>
+<span><font style="font-size: 42px;">...check out the docs!</font></span><br>
+</li>
+</ul>
+<ul></ul>
+</div></section><section class="" data-id="715861f4ce84e601061d8c4ab978b2a3"><h2 style="font-style: normal; font-variant: normal; text-align: left;">Requesting | Request Interceptors</h2>
+<pre style="color: rgb(169, 183, 198); font-family: Menlo; background-color: rgb(43, 43, 43);"><span style="color:#cc7832;">public class </span>ThrottlingInterceptor <span style="color:#cc7832;">implements </span>RequestInterceptor {<br>   <span style="color:#cc7832;">private static final </span>String <span style="color:#9876aa;font-style:italic;">TAG </span>= ThrottlingInterceptor.<span style="color:#cc7832;">class</span>.getSimpleName()<span style="color:#cc7832;">;<br></span><span style="color:#cc7832;"><br></span><span style="color:#cc7832;">   private long </span><span style="color:#9876aa;">lastRequest </span>= <span style="color:#6897bb;">0L</span><span style="color:#cc7832;">;<br></span><span style="color:#cc7832;">   private final long </span><span style="color:#9876aa;">maxRequestSpeed</span><span style="color:#cc7832;">;<br></span><span style="color:#cc7832;">   private final </span>Lock <span style="color:#9876aa;">requestLock </span>= <span style="color:#cc7832;">new </span>ReentrantLock()<span style="color:#cc7832;">;<br></span><span style="color:#cc7832;">   <br></span><span style="color:#cc7832;">   public </span>ThrottlingInterceptor(<span style="color:#cc7832;">long </span>maxRequestSpeed) {<br>      <span style="color:#cc7832;">this</span>.<span style="color:#9876aa;">maxRequestSpeed </span>= maxRequestSpeed<span style="color:#cc7832;">;<br></span><span style="color:#cc7832;">   </span>}<br><br>   <span style="color:#bbb529;">@Override<br></span><span style="color:#bbb529;">   </span><span style="color:#cc7832;">public void </span><span style="color:#ffc66d;">intercept</span>(RequestFacade request) {<br>      <span style="color:#9876aa;">requestLock</span>.lock()<span style="color:#cc7832;">;<br></span><span style="color:#cc7832;">      <br></span><span style="color:#cc7832;">      try </span>{<br>         <span style="color:#cc7832;">long </span>curTime = System.<span style="font-style:italic;">currentTimeMillis</span>()<span style="color:#cc7832;">;<br></span><span style="color:#cc7832;">         long </span>diff = curTime - <span style="color:#9876aa;">lastRequest</span><span style="color:#cc7832;">;<br></span><span style="color:#cc7832;"><br></span><span style="color:#cc7832;">         if </span>(diff &lt; <span style="color:#9876aa;">maxRequestSpeed</span>)<br>            <span style="color:#cc7832;">try </span>{<br>               Thread.<span style="font-style:italic;">sleep</span>(<span style="color:#9876aa;">maxRequestSpeed </span>- diff)<span style="color:#cc7832;">;<br></span><span style="color:#cc7832;">            </span>} <span style="color:#cc7832;">catch </span>(InterruptedException e) {<br>               Log.<span style="font-style:italic;">e</span>(<span style="color:#9876aa;font-style:italic;">TAG</span><span style="color:#cc7832;">, </span><span style="color:#6a8759;">"Error: " </span>+ e.getMessage())<span style="color:#cc7832;">;<br></span><span style="color:#cc7832;">            </span>}<br><br>         <span style="color:#9876aa;">lastRequest </span>= System.<span style="font-style:italic;">currentTimeMillis</span>()<span style="color:#cc7832;">;<br></span><span style="color:#cc7832;">      </span>} <span style="color:#cc7832;">finally </span>{ <span style="color:#9876aa;">requestLock</span>.unlock()<span style="color:#cc7832;">; </span>}<br>   }<br>}</pre></section><section class="" data-id="decfd601a4f1bc9adf9e48e92f5840e0"><h2 style="font-style: normal; font-variant: normal; text-align: left;">Requesting | Request Interceptors</h2>
+<div style="text-align: left; ">Continued...</div>
+<div><pre style="color: rgb(169, 183, 198); font-family: Menlo; background-color: rgb(43, 43, 43);">RestAdapter restAdapter = <span style="color:#cc7832;">new </span>RestAdapter.Builder()<br>        <span style="color:#808080;">// Throttle every 1s<br></span><span style="color:#808080;">        </span>.setRequestInterceptor(<span style="color:#cc7832;">new </span>ThrottlingInterceptor(<span style="color:#6897bb;">1000</span>)) <br>        .setEndpoint(Api.<span style="color:#9876aa;font-style:italic;">BASE_URL</span>).build()<span style="color:#cc7832;">;<br></span><span style="color:#9876aa;">mTodoApi </span>= restAdapter.create(TodoApi.<span style="color:#cc7832;">class</span>)<span style="color:#cc7832;">;</span></pre></div>
+<br></section><section class="" data-id="329efecd767a170e76838deb3f0a6e77"><h2 style="font-style: normal; font-variant: normal; text-align: left;">Requesting | Error Handler</h2>
+<pre style="font-family: Menlo; background-color: rgb(43, 43, 43);"><span style="color: rgb(169, 183, 198);"><span style="color:#cc7832;">public class </span>TodoErrorHandler <span style="color:#cc7832;">implements </span>ErrorHandler {<br>    </span><font color="#cc7832">// Variable declarations and constructor...</font><span style="color: rgb(204, 120, 50);"><br></span><span style="color: rgb(204, 120, 50);">    </span><font color="#a9b7c6"><br>    </font><span style="color: rgb(187, 181, 41);">@Override<br></span><span style="color: rgb(187, 181, 41);">    </span><span style="color: rgb(204, 120, 50);">public </span><font color="#a9b7c6">Throwable </font><span style="color: rgb(255, 198, 109);">handleError</span><font color="#a9b7c6">(RetrofitError cause) {<br>        </font><span style="color: rgb(204, 120, 50);">if </span><font color="#a9b7c6">(cause.getKind() == RetrofitError.Kind.</font><span style="color: rgb(152, 118, 170); font-style: italic;">NETWORK</span><font color="#a9b7c6">) {<br>            </font><span style="color: rgb(152, 118, 170); font-style: italic;">mToastHandler</span><font color="#a9b7c6">.post(</font><span style="color: rgb(204, 120, 50);">new </span><font color="#a9b7c6">Runnable() {<br>                </font><span style="color: rgb(187, 181, 41);">@Override<br></span><span style="color: rgb(187, 181, 41);">                </span><span style="color: rgb(204, 120, 50);">public void </span><span style="color: rgb(255, 198, 109);">run</span><font color="#a9b7c6">() {<br>                    Toast.</font><span style="color: rgb(169, 183, 198); font-style: italic;">makeText</span><font color="#a9b7c6">(</font><span style="color: rgb(152, 118, 170);">mContext</span><span style="color: rgb(204, 120, 50);">, </span><font color="#a9b7c6">R.string.</font><span style="color: rgb(152, 118, 170); font-style: italic;">error_network</span><span style="color: rgb(204, 120, 50);">, </span><font color="#a9b7c6">Toast.</font><span style="color: rgb(152, 118, 170); font-style: italic;">LENGTH_SHORT</span><font color="#a9b7c6">).show()</font><span style="color: rgb(204, 120, 50);">;<br></span><span style="color: rgb(204, 120, 50);">                </span><font color="#a9b7c6">}<br>            })</font><span style="color: rgb(204, 120, 50);">;<br></span><span style="color: rgb(204, 120, 50);">        </span><font color="#a9b7c6">} </font><span style="color: rgb(204, 120, 50);">else if </span><font color="#a9b7c6">(cause.getKind() == RetrofitError.Kind.</font><span style="color: rgb(152, 118, 170); font-style: italic;">HTTP</span><font color="#a9b7c6">) {<br>            </font><span style="color: rgb(152, 118, 170); font-style: italic;">mToastHandler</span><font color="#a9b7c6">.post(</font><span style="color: rgb(204, 120, 50);">new </span><font color="#a9b7c6">Runnable() {<br>                </font><span style="color: rgb(187, 181, 41);">@Override<br></span><span style="color: rgb(187, 181, 41);">                </span><span style="color: rgb(204, 120, 50);">public void </span><span style="color: rgb(255, 198, 109);">run</span><font color="#a9b7c6">() {<br>                    Toast.</font><span style="color: rgb(169, 183, 198); font-style: italic;">makeText</span><font color="#a9b7c6">(</font><span style="color: rgb(152, 118, 170);">mContext</span><span style="color: rgb(204, 120, 50);">, </span><font color="#a9b7c6">R.string.</font><span style="color: rgb(152, 118, 170); font-style: italic;">error_http</span><span style="color: rgb(204, 120, 50);">, </span><font color="#a9b7c6">Toast.</font><span style="color: rgb(152, 118, 170); font-style: italic;">LENGTH_SHORT</span><font color="#a9b7c6">).show()</font><span style="color: rgb(204, 120, 50);">;<br></span><span style="color: rgb(204, 120, 50);">                </span><font color="#a9b7c6">}<br>            })</font><span style="color: rgb(204, 120, 50);">;<br></span><span style="color: rgb(204, 120, 50);">        </span><font color="#a9b7c6">}        <br>        </font><span style="color: rgb(204, 120, 50);">return </span><font color="#a9b7c6">cause.getCause()</font><span style="color: rgb(204, 120, 50);">;<br></span><span style="color: rgb(204, 120, 50);">    </span><font color="#a9b7c6">}<br>}</font></pre>
+<br></section><section class="" data-id="d2fdf79f1a0f03e44500377eacb889bc"><h2 style="font-style: normal; font-variant: normal; text-align: left;">Benchmark</h2>
+<div><br></div>
+<div><br></div>
+<div>
+<img src="http://i.imgur.com/tIdZkl3.png"><br>
+</div>
+<div><font style="font-size: 18px;" color="#ffffff">(http://instructure.github.io/blog/2013/12/09/volley-vs-retrofit/)</font></div></section><section class="" data-id="51da90a1375aee065396550f48cde56d"><h2>Retrofit 2.0</h2>
+<div><br></div>
+<div><br></div>
+<div><br></div>
+<div style="text-align: left; "><ul>
+<li><font style="font-size: 42px;"><span style="font-style: normal; font-variant: normal;">Synchronous/Asynchronous call agnostic</span><br></font></li>
+<li><font style="font-size: 42px;"><span style="font-style: normal; font-variant: normal;">Cancellable requests</span><br></font></li>
+<li><font style="font-size: 42px;"><span style="font-style: normal; font-variant: normal;">Better Request/Response Interceptors</span><br></font></li>
+<li><font style="font-size: 42px;"><span style="font-style: normal; font-variant: normal;">Auto-retry of requests</span><br></font></li>
+<li><font style="font-size: 42px;"><span style="font-style: normal; font-variant: normal;">Extensions support</span><br></font></li>
+<li>
+<span style="font-style: normal; font-variant: normal;"><font style="font-size: 42px;">...and more!</font></span><br>
+</li>
+</ul></div></section><section class="" data-id="413d30655136d2554f84820c8d6827d5"><h2><br></h2>
+<div><br></div>
+<div><br></div>
+<div><br></div>
+<div><br></div>
+<h1>END</h1>
+<div>Questions? Clarifications?</div>
+<div><br></div>
+<div><br></div>
+<div><br></div>
+<div><br></div>
+<div>
+<a href="https://bitbucket.org/deubaka/retrofit-test-app">https://bitbucket.org/deubaka/retrofit-test-app</a><br>
+</div></section>
+			</div>
+		</div>
+
+		<script>
+			var SLConfig = {"deck": {"id":433193,"slug":"retrofit","title":"Retrofit","description":"A presentation on Retrofit used for PADC's 2nd Meetup of 2015 @ KLabs.","visibility":"all","published_at":"2015-06-10T12:24:37.872Z","sanitize_messages":null,"thumbnail_url":"https://s3.amazonaws.com/media-p.slid.es/thumbnails/secure/f2de77/decks.jpg","view_count":9,"user":{"id":125237,"username":"deubaka","name":"Deuphil Kaufmann (deu)","description":"","thumbnail_url":"https://lh3.googleusercontent.com/-rGzHMP1e0R8/AAAAAAAAAAI/AAAAAAAADIk/aJpnGdFwmCM/photo.jpg","pro":true,"enterprise":false,"enterprise_manager":false,"settings":{"id":28741,"present_controls":true,"present_upsizing":true},"registered":true},"background_transition":"fade","transition":"linear","theme_id":null,"theme_font":"opensans","theme_color":"asphalt-orange","auto_slide_interval":0,"comments_enabled":true,"forking_enabled":true,"rolling_links":false,"center":false,"should_loop":false,"rtl":false,"version":0,"notes":{}}};
+			SLConfig.current_user = {
+				name: "Deuphil Kaufmann (deu)",
+				username: "deubaka",
+				pro: true
+			};
+		</script>
+
+		<script src="lib/head.min.js"></script>
+		<script src="lib/reveal.min.js"></script>
+		<script>
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				mouseWheel: false,
+
+				autoSlide: SLConfig.deck.auto_slide_interval || 0,
+				autoSlideStoppable: true,
+
+				rolling_links: SLConfig.deck.rolling_links || true,
+				center: SLConfig.deck.center || false,
+				loop: SLConfig.deck.should_loop || false,
+				rtl: SLConfig.deck.rtl || false,
+
+				transition: SLConfig.deck.transition,
+				backgroundTransition: SLConfig.deck.background_transition,
+
+				dependencies: [
+					{ src: 'lib/reveal-plugins/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'lib/reveal-plugins/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'lib/reveal-plugins/highlight/highlight.js', async: true, callback: function() { hljs.initHighlighting(); hljs.initHighlightingOnLoad(); } },
+					{ src: 'lib/reveal-plugins/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+				]
+			});
+
+			// Make Slides speaker notes available in the reveal.js speaker view
+			if( SLConfig.deck.notes ) {
+				[].forEach.call( document.querySelectorAll( '.reveal .slides section' ), function( slide ) {
+
+					var value = SLConfig.deck.notes[ slide.getAttribute( 'data-id' ) ];
+					if( value && typeof value === 'string' ) {
+						slide.setAttribute( 'data-notes', value );
+					}
+
+				} );
+			}
+		</script>
+
+		
+
+	</body>
+</html>
